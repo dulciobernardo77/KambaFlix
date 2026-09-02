@@ -1,3 +1,16 @@
 spring:
   application:
     name: KambaFlix
+
+datasource:
+  url: jdbc:postgresql://localhost:5432/postgres
+  username: postgres
+  passawold: 1234
+  drive-class-name: org.postgresql.Driver
+
+jpa:
+  database-platform: org.hibernate.dialect.PostgreSQLDialect
+  sql-show: true
+
+  flyway:
+    enabled: true
