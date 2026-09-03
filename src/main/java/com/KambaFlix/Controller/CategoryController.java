@@ -1,7 +1,10 @@
 package com.KambaFlix.Controller;
 
+import com.KambaFlix.Controller.request.CategoryRequest;
+import com.KambaFlix.Controller.response.CategoryResponse;
 import com.KambaFlix.Entity.Category;
 import com.KambaFlix.Service.CategoryService;
+import com.KambaFlix.mapper.CategoryMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,25 +19,29 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-
     @GetMapping()
-    public List<Category> getAllCategory(){
-        return categoryService.findAll();
+    public List<CategoryResponse> getAllCategory(){
+        List<Category> categoryList = categoryService.findAll();
+        return categoryList.stream()
+                .map(CategoryMapper::toCategoryResponce)
+                .toList();
     }
 
     @PostMapping("/cadastrar")
-    public Category postCadastroDeCategory(@RequestBody Category category){
-        return categoryService.cadastroDeCategory(category);
+    public CategoryResponse postCadastroDeCategory(@RequestBody CategoryRequest request){
+        Category category = CategoryMapper.toCategory(request);
+        Category categorysave = categoryService.cadastroDeCategory(category);
+        return CategoryMapper.toCategoryResponce(categorysave);
     }
 
     @GetMapping("/{id}")
-    public Category getAllCategoryById(@PathVariable Long id){
-        return categoryService.findById(id);
+    public CategoryResponse getByCategoryId(@PathVariable Long id){
+        Category category = categoryService.findById(id);
+        return CategoryMapper.toCategoryResponce(category);
     }
 
-
-    @DeleteMapping("/delete/{id}")
-    public  void delete(@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public  void deleteByCategoryId(@PathVariable Long id){
          categoryService.delete(id);
     }
 
