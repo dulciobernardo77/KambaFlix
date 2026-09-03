@@ -17,7 +17,7 @@ public class CategoryController {
     }
 
 
-    @GetMapping("/lista")
+    @GetMapping()
     public List<Category> getAllCategory(){
         return categoryService.findAll();
     }
@@ -27,13 +27,13 @@ public class CategoryController {
         return categoryService.cadastroDeCategory(category);
     }
 
-    @GetMapping("/lista/{id}")
+    @GetMapping("/{id}")
     public Category getAllCategoryById(@PathVariable Long id){
         return categoryService.findById(id);
     }
 
 
-    @DeleteMapping("/lista/{id}")
+    @DeleteMapping("/delete/{id}")
     public  void delete(@PathVariable Long id){
          categoryService.delete(id);
     }
