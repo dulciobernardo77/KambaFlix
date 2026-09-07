@@ -6,6 +6,7 @@ import com.KambaFlix.Controller.response.MovieResponse;
 import com.KambaFlix.Entity.Movie;
 import com.KambaFlix.Service.MovieService;
 import com.KambaFlix.mapper.MovieMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/kambaflix/movie")
+@RequiredArgsConstructor
 public class MovieController {
 
     private  final MovieService movieService;
-
-    public MovieController(MovieService movieService) {
-        this.movieService = movieService;
-    }
 
     @GetMapping()
     public ResponseEntity<List<MovieResponse>> findAll(){
@@ -32,7 +30,7 @@ public class MovieController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<MovieResponse>  SavedCategory(@RequestBody MovieRequest request){
+    public ResponseEntity<MovieResponse>  SavedMovie(@RequestBody MovieRequest request){
         Movie movie = movieService.SavedMovie(MovieMapper.toMovie(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toMovieResponse(movie));
     }
@@ -46,6 +44,20 @@ public class MovieController {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("A Streaming com IDs: "+id+" nao encontrado nos nossos banco de dados");
         }
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieResponse> alterByMovie(@PathVariable Long id,@RequestBody MovieRequest request){
+        return movieService.alterByMovie(id,MovieMapper.toMovie(request))
+                .map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponse(movie))).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long categoryId){
+            return ResponseEntity.ok(movieService.findByCategory(categoryId)
+                    .stream()
+                    .map(MovieMapper::toMovieResponse)
+                    .toList());
     }
 
     @DeleteMapping("/{id}")
