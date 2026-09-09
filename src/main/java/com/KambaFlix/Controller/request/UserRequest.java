@@ -1,4 +1,8 @@
 package com.KambaFlix.Controller.request;
 
-public class UserRequest {
+
+import lombok.Builder;
+
+@Builder
+public record UserRequest (String  name , String email, String password){
 }
