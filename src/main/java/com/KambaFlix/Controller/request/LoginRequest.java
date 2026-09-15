@@ -1,4 +1,4 @@
 package com.KambaFlix.Controller.request;
 
-public record LoginRequest() {
+public record LoginRequest(String email, String password) {
 }
