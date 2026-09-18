@@ -37,5 +37,6 @@ public class AuthController {
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
 
         User user = (User) authenticate.getPrincipal();
+        return ResponseEntity.ok(user.getUsername());
     }
 }
