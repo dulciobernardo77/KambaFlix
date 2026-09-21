@@ -25,8 +25,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/Kambaflix/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/Kambaflix/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/kambaflix/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/kambaflix/auth/login").permitAll()
                         .anyRequest().authenticated())
 
                 // .addFilter()
