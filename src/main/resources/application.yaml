@@ -16,3 +16,6 @@ spring:
   flyway:
     enabled: true
 
+kambaflix:
+  security:
+    secret: palava-secreta
