@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
@@ -49,4 +50,3 @@ public class AuthController {
         return ResponseEntity.ok(user.getUsername());
     }
 }
-
