@@ -1,4 +1,4 @@
 package com.KambaFlix.Controller.response;
 
-public record LoginResponse() {
+public record LoginResponse(String token) {
 }
