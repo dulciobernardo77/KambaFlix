@@ -5,6 +5,7 @@ import com.KambaFlix.Controller.response.StreamingResponse;
 import com.KambaFlix.Entity.Streaming;
 import com.KambaFlix.Service.StreamingService;
 import com.KambaFlix.mapper.StreamingMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class StreamingController {
         return ResponseEntity.ok(streamings);
     }
     @PostMapping("cadastrar")
-    public ResponseEntity<StreamingResponse>  SavedCategory(@RequestBody StreamingRequest request){
+    public ResponseEntity<StreamingResponse>  SavedCategory(@Valid @RequestBody StreamingRequest request){
         Streaming SavedStreaming = streamingService.SavedCategory(StreamingMapper.toStreaming(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(StreamingMapper.toStreamingResponse(SavedStreaming));
     }
