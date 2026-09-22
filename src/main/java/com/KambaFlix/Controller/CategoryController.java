@@ -5,6 +5,7 @@ import com.KambaFlix.Controller.response.CategoryResponse;
 import com.KambaFlix.Entity.Category;
 import com.KambaFlix.Service.CategoryService;
 import com.KambaFlix.mapper.CategoryMapper;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class CategoryController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<CategoryResponse> postCadastroDeCategory(@RequestBody CategoryRequest request){
+    public ResponseEntity<CategoryResponse> postCadastroDeCategory(@Valid @RequestBody CategoryRequest request){
         Category category = CategoryMapper.toCategory(request);
         Category categorysave = categoryService.cadastroDeCategory(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toCategoryResponce(categorysave));
