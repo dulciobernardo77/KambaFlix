@@ -4,12 +4,14 @@ import com.KambaFlix.Controller.request.LoginRequest;
 import com.KambaFlix.Controller.request.UserRequest;
 import com.KambaFlix.Controller.response.UserResponse;
 import com.KambaFlix.Entity.User;
+import com.KambaFlix.Exceptions.UsenameOrPasswordInvalidExceptions;
 import com.KambaFlix.Service.UserService;
 import com.KambaFlix.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,17 +38,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        request.email(),
-                        request.password()
-                );
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            request.email(),
+                            request.password()
+                    );
 
-        Authentication authenticate =
-                authenticationManager.authenticate(authenticationToken);
+            Authentication authenticate =
+                    authenticationManager.authenticate(authenticationToken);
 
-        User user = (User) authenticate.getPrincipal();
+            User user = (User) authenticate.getPrincipal();
 
-        return ResponseEntity.ok(user.getUsername());
+            return ResponseEntity.ok(user.getUsername());
+        }catch (BadCredentialsException ex){
+            throw  new UsenameOrPasswordInvalidExceptions("Nome ou senha invalida");
+        }
     }
 }
