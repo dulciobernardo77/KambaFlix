@@ -6,6 +6,7 @@ import com.KambaFlix.Controller.response.MovieResponse;
 import com.KambaFlix.Entity.Movie;
 import com.KambaFlix.Service.MovieService;
 import com.KambaFlix.mapper.MovieMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class MovieController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<MovieResponse>  SavedMovie(@RequestBody MovieRequest request){
+    public ResponseEntity<MovieResponse>  SavedMovie(@Valid @RequestBody MovieRequest request){
         Movie movie = movieService.SavedMovie(MovieMapper.toMovie(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toMovieResponse(movie));
     }
@@ -47,7 +48,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponse> alterByMovie(@PathVariable Long id,@RequestBody MovieRequest request){
+    public ResponseEntity<MovieResponse> alterByMovie(@PathVariable Long id,@Valid @RequestBody MovieRequest request){
         return movieService.alterByMovie(id,MovieMapper.toMovie(request))
                 .map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponse(movie))).orElse(ResponseEntity.notFound().build());
     }
