@@ -20,7 +20,8 @@ public class AplicationControllerAdvice {
         return ex.getMessage();
     }
 
-    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleArgumentNotValideionException(MethodArgumentNotValidException ex){
         Map<String,String> errors = new HashMap<>();
 

@@ -1,7 +1,9 @@
 package com.KambaFlix.Controller;
 
+import com.KambaFlix.Config.TokenSecurity;
 import com.KambaFlix.Controller.request.LoginRequest;
 import com.KambaFlix.Controller.request.UserRequest;
+import com.KambaFlix.Controller.response.LoginResponse;
 import com.KambaFlix.Controller.response.UserResponse;
 import com.KambaFlix.Entity.User;
 import com.KambaFlix.Exceptions.UsenameOrPasswordInvalidExceptions;
@@ -27,6 +29,7 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final TokenSecurity tokenSecurity;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
@@ -37,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         try {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(
@@ -50,7 +53,9 @@ public class AuthController {
 
             User user = (User) authenticate.getPrincipal();
 
-            return ResponseEntity.ok(user.getUsername());
+            String token = tokenSecurity.generateToken(user);
+
+            return ResponseEntity.ok(new LoginResponse(token));
         }catch (BadCredentialsException ex){
             throw  new UsenameOrPasswordInvalidExceptions("Nome ou senha invalida");
         }
