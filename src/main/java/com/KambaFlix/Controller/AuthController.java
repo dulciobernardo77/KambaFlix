@@ -1,6 +1,6 @@
 package com.KambaFlix.Controller;
 
-import com.KambaFlix.Config.TokenSecurity;
+import com.KambaFlix.Config.TokenService;
 import com.KambaFlix.Controller.request.LoginRequest;
 import com.KambaFlix.Controller.request.UserRequest;
 import com.KambaFlix.Controller.response.LoginResponse;
@@ -29,7 +29,7 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final TokenSecurity tokenSecurity;
+    private final TokenService tokenSecurity;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
