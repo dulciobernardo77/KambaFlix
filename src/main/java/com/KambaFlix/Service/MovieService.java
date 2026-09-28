@@ -1,11 +1,13 @@
 package com.KambaFlix.Service;
 
+import com.KambaFlix.Config.JWTUserData;
 import com.KambaFlix.Entity.Category;
 import com.KambaFlix.Entity.Movie;
 import com.KambaFlix.Entity.Streaming;
 import com.KambaFlix.Repository.MovieRepository;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +55,8 @@ public class MovieService {
 
             List<Category> categoryList = this.findCategory(updatemovie.getCategory());
             List<Streaming> streamingList = this.findStreaming(updatemovie.getStreaming());
+
+
 
             Movie movie = movieOptional.get();
             movie.setTitle(updatemovie.getTitle());
