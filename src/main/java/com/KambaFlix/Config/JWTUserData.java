@@ -1,4 +1,7 @@
 package com.KambaFlix.Config;
 
-public record JWTUserData() {
+import lombok.Builder;
+
+@Builder
+public record JWTUserData(Long id,String nome , String email) {
 }
