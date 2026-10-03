@@ -5,6 +5,11 @@ import com.KambaFlix.Controller.response.CategoryResponse;
 import com.KambaFlix.Entity.Category;
 import com.KambaFlix.Service.CategoryService;
 import com.KambaFlix.mapper.CategoryMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +19,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/kambaflix/category")
+@Tag(name = "Categorias", description = "Gestão das categorias de filmes.")
+@SecurityRequirement(name = "bearerAuth")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -23,6 +30,8 @@ public class CategoryController {
     }
 
     @GetMapping()
+    @Operation(summary = "Listar categorias", description = "Devolve todas as categorias disponíveis.")
+    @ApiResponse(responseCode = "200", description = "Lista de categorias devolvida com sucesso.")
     public ResponseEntity<List<CategoryResponse>> getAllCategory(){
         List<CategoryResponse> categoryList = categoryService.findAll()
                 .stream()
@@ -32,6 +41,11 @@ public class CategoryController {
     }
 
     @PostMapping("/cadastrar")
+    @Operation(summary = "Criar categoria", description = "Adiciona uma nova categoria.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos; o nome é obrigatório.")
+    })
     public ResponseEntity<CategoryResponse> postCadastroDeCategory(@Valid @RequestBody CategoryRequest request){
         Category category = CategoryMapper.toCategory(request);
         Category categorysave = categoryService.cadastroDeCategory(category);
@@ -39,6 +53,11 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obter categoria", description = "Procura uma categoria pelo seu identificador.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Categoria encontrada."),
+            @ApiResponse(responseCode = "404", description = "Não existe uma categoria com o identificador indicado.")
+    })
     public ResponseEntity<?> getByCategoryId(@PathVariable Long id){
         if (categoryService.findById(id) != null) {
             Category category = categoryService.findById(id);
@@ -49,6 +68,11 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Remover categoria", description = "Remove uma categoria.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Categoria removida com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Não existe uma categoria com o identificador indicado.")
+    })
     public  ResponseEntity<String> deleteByCategoryId(@PathVariable Long id){
         if (categoryService.findById(id) != null) {
             categoryService.delete(id);
